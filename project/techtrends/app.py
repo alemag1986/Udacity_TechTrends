@@ -70,6 +70,11 @@ def health_check():
     response ="OK - health"
     return jsonify(response)
 
+@app.route('/metrics', methods=('GET'))
+def metrics():
+    response ="OK - health"
+    return jsonify(response)
+
 # start the application on port 3111
 if __name__ == "__main__":
    app.run(host='0.0.0.0', port='3111')
