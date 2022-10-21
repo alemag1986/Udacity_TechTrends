@@ -40,10 +40,13 @@ def post(post_id):
     else:
       return render_template('post.html', post=post)
 
+
 # Define the About Us page
 @app.route('/about')
 def about():
+    print_tet()
     return render_template('about.html')
+
 
 # Define the post creation functionality 
 @app.route('/create', methods=('GET', 'POST'))
@@ -65,15 +68,18 @@ def create():
 
     return render_template('create.html')
 
-@app.route('/healthz', methods=('GET'))
-def health_check():
-    response ="OK - health"
-    return jsonify(response)
 
 @app.route('/metrics', methods=('GET'))
 def metrics():
-    response ="OK - health"
+    response = "OK - health"
     return jsonify(response)
+
+
+@app.route('/healthz')
+def print_tet():
+    response = "OK - health"
+    return jsonify(response)
+
 
 # start the application on port 3111
 if __name__ == "__main__":
