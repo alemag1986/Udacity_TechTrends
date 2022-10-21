@@ -1,4 +1,5 @@
 import sqlite3
+import logging
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
@@ -34,17 +35,20 @@ def index():
 # If the post ID is not found a 404 page is shown
 @app.route('/<int:post_id>')
 def post(post_id):
+    
     post = get_post(post_id)
     if post is None:
+        app.logger.info('Main request successfull')
       return render_template('404.html'), 404
     else:
+        app.logger.info('Main request successfull')
       return render_template('post.html', post=post)
 
 
 # Define the About Us page
 @app.route('/about')
 def about():
-    print_tet()
+    app.logger.info('About page requested')
     return render_template('about.html')
 
 
@@ -63,7 +67,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-
+            app.logger.info('Main request successfull')
             return redirect(url_for('index'))
 
     return render_template('create.html')
@@ -83,4 +87,5 @@ def print_tet():
 
 # start the application on port 3111
 if __name__ == "__main__":
-   app.run(host='0.0.0.0', port='3111')
+    logging.basicConfig(filename='app.log',level=logging.DEBUG)
+    app.run(host='0.0.0.0', port='3111')
