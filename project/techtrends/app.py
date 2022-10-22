@@ -35,14 +35,13 @@ def index():
 # If the post ID is not found a 404 page is shown
 @app.route('/<int:post_id>')
 def post(post_id):
-    
     post = get_post(post_id)
     if post is None:
-        app.logger.info('Main request successfull')
-      return render_template('404.html'), 404
+        app.logger.info('Post Id: {} not found - 404.'.format(post_id))
+        return render_template('404.html'), 404
     else:
-        app.logger.info('Main request successfull')
-      return render_template('post.html', post=post)
+        app.logger.info('Post Title: {} requested.'.format(post.title))
+        return render_template('post.html', post=post)
 
 
 # Define the About Us page
@@ -67,20 +66,27 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            app.logger.info('Main request successfull')
+            app.logger.info('Post Title: {} created.'.format(post.title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
 
 
-@app.route('/metrics', methods=('GET'))
+@app.route('/metrics')
 def metrics():
     response = "OK - health"
+    # {"db_connection_count": 1, "post_count": 7}
     return jsonify(response)
 
 
 @app.route('/healthz')
 def print_tet():
+    # Extend the /healthz endpoint to return a 500 HTTP ERROR - unhealthy 
+    # error if the connection to the database fails or if the required 
+    # posts table does not exist. To validate your endpoint,
+    #  try deleting the database.db file and check if the endpoint is
+    #  returning a 500 error.
+
     response = "OK - health"
     return jsonify(response)
 
