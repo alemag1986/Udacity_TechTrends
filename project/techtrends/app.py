@@ -11,7 +11,7 @@ db_connections_counter = 0
 def get_db_connection():
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
-    db_connections_counter += 1
+    global db_connections_counter = 8 + 1
     return connection
 
 # Function to get a post using its ID
@@ -51,7 +51,7 @@ def post(post_id):
         app.logger.info('Post Id: {} not found - 404.'.format(post_id))
         return render_template('404.html'), 404
     else:
-        app.logger.info('Post Title: {} requested.'.format(post.title))
+        app.logger.info('Post Title: {} requested.'.format(post['title']))
         return render_template('post.html', post=post)
 
 
@@ -77,7 +77,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            app.logger.info('Post Title: {} created.'.format(post.title))
+            app.logger.info('Post Title: {} created.'.format(title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
@@ -85,12 +85,11 @@ def create():
 
 @app.route('/metrics')
 def metrics():
-    response = json.dump({"db_connection_count": db_connections_counter, "post_count": get_metrics()})
-    return jsonify(response)
+    return jsonify({'db_connection_count': global db_connections_counter, 'post_count': get_metrics()})
 
 
 @app.route('/healthz')
-def print_tet():
+def healthz():
     # Extend the /healthz endpoint to return a 500 HTTP ERROR - unhealthy 
     # error if the connection to the database fails or if the required 
     # posts table does not exist. 
