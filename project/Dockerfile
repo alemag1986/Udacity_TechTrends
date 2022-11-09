@@ -1,7 +1,6 @@
 FROM python:3.10-alpine
 
 WORKDIR /app
-# RUN chmod 755 /app
 
 COPY techtrends/*.py ./
 COPY techtrends/requirements.txt ./
