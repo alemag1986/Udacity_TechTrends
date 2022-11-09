@@ -1,3 +1,3 @@
-## Kubernetes Declarative Manifests 
+sudo su -
 
-Place the Kubernetes declarative manifests in this directory.
+curl -sfL https://get.k3s.io | sh -
