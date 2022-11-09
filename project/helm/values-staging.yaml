@@ -1,6 +1,16 @@
-namespace name: staging
-service port: 5111
-replicaCount: 3
+namespace:
+  name: staging
+
+service:
+  port: 5111
+
+image:
+  replicaCount: 3
+
 resources:
-requests: memory 90Mi and CPU 300m
-limits: memory 128Mi and CPU 500m
+  requests: 
+    memory: 90Mi
+    cpu: 300m
+  limits:  
+    memory: 128Mi
+    cpu: 500m
