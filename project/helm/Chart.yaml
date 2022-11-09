@@ -1,0 +1,9 @@
+apiVersion: v1
+name: techtrends 
+description: TechTrends helm template
+keywords:
+- techtrends
+version: 1.0.0
+maintainers:
+- name: alejandro magnani 
+  email: alejandro.magnani@gmail.com
