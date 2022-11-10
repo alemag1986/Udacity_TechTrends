@@ -31,5 +31,5 @@ jobs:
         with:
           context: project/
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: crushingminds/techtrends:latest
           labels: ${{ steps.meta.outputs.labels }}
