@@ -5,13 +5,13 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: staging
+    namespace: default
     server: https://kubernetes.default.svc
   project: techtrends
   source:
     helm:
       valueFiles:
       - values-staging.yaml
-    path: project/helm/nginx-deployment
+    path: project/helm
     repoURL: https://github.com/alemag1986/Udacity_TechTrends
     targetRevision: HEAD
