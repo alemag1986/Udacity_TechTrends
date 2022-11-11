@@ -1,10 +1,16 @@
 import sqlite3
 import logging
+import sys
 
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
 connections_counter = 0
+
+def log(message):
+    sys.stdout.write(message)
+    sys.stderr.write(message)
+    app.logger.info(message)
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
@@ -49,17 +55,17 @@ def index():
 def post(post_id):
     post = get_post(post_id)
     if post is None:
-        app.logger.info('Post Id: {} not found - 404.'.format(post_id))
+        log('Post Id: {} not found - 404.'.format(post_id))
         return render_template('404.html'), 404
     else:
-        app.logger.info('Post Title: {} requested.'.format(post['title']))
+        log('Post Title: {} requested.'.format(post['title']))
         return render_template('post.html', post=post)
 
 
 # Define the About Us page
 @app.route('/about')
 def about():
-    app.logger.info('About page requested')
+    log('About page requested')
     return render_template('about.html')
 
 
@@ -78,7 +84,7 @@ def create():
                          (title, content))
             connection.commit()
             connection.close()
-            app.logger.info('Post Title: {} created.'.format(title))
+            log('Post Title: {} created.'.format(title))
             return redirect(url_for('index'))
 
     return render_template('create.html')
