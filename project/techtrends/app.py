@@ -87,7 +87,7 @@ def create():
 @app.route('/metrics')
 def metrics():
     global connections_counter
-    return jsonify({'db_connection_count': connections_counter, 'post_count': get_metrics() })
+    return jsonify({'db_connection_count': connections_counter, 'post_count': get_metrics() }), 200
 
 
 @app.route('/healthz')
@@ -98,14 +98,15 @@ def healthz():
     try:
         connection = get_metrics()
     except:
-        return jsonify("ERROR - Database Error."), 500
+        response = { 'result': 'ERROR - Database Error.' }
+        return jsonify(response), 500
     
     #To validate your endpoint,
     #  try deleting the database.db file and check if the endpoint is
     #  returning a 500 error.
 
-    response = "OK - health"
-    return jsonify(response)
+    response = { 'result': 'OK - health' }
+    return jsonify(response), 200
 
 
 # start the application on port 3111
