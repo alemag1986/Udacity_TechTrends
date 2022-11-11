@@ -4,12 +4,15 @@ import logging
 from flask import Flask, jsonify, json, render_template, request, url_for, redirect, flash
 from werkzeug.exceptions import abort
 
+connections_counter = 0
 
 # Function to get a database connection.
 # This function connects to database with the name `database.db`
 def get_db_connection():
+    global connections_counter
     connection = sqlite3.connect('database.db')
     connection.row_factory = sqlite3.Row
+    connections_counter = connections_counter + 1
     return connection
 
 # Function to get a post using its ID
@@ -83,7 +86,8 @@ def create():
 
 @app.route('/metrics')
 def metrics():
-    return jsonify({'db_connection_count': 1, 'post_count': get_metrics() })
+    global connections_counter
+    return jsonify({'db_connection_count': connections_counter, 'post_count': get_metrics() })
 
 
 @app.route('/healthz')
@@ -91,6 +95,10 @@ def healthz():
     # Extend the /healthz endpoint to return a 500 HTTP ERROR - unhealthy 
     # error if the connection to the database fails or if the required 
     # posts table does not exist. 
+    try:
+        connection = get_metrics()
+    except:
+        return jsonify("ERROR - Database Error."), 500
     
     #To validate your endpoint,
     #  try deleting the database.db file and check if the endpoint is
